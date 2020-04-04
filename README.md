@@ -13,7 +13,7 @@ Based on [server example](https://github.com/aiortc/aiortc/tree/master/examples/
 * Run server.py script.
 
   `python server.py`
-* Open `127.0.0.1:8080` and navigate the interface.
+* Open `127.0.0.1:8080` and navigate the interface. <br>_The frameRate control doesn't work on Firefox, use Google Chrome_.
 
 We are actually interested in the video transmission in this project so we can ignore the rest of the features included.
 
