@@ -1,5 +1,3 @@
-import cv2
-
 
 def visualize_faces(img):
 	img [...,1:] = 0
