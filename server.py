@@ -13,7 +13,7 @@ from av import VideoFrame
 from aiortc import MediaStreamTrack, RTCPeerConnection, RTCSessionDescription
 from aiortc.contrib.media import MediaBlackhole, MediaPlayer, MediaRecorder
 
-from visers import *
+from visualizers import *
 
 ROOT = os.path.dirname(__file__)
 
@@ -35,16 +35,16 @@ class VideoTransformTrack(MediaStreamTrack):
 
     async def recv(self):
         frame = await self.track.recv()
-        
+
         img = frame.to_ndarray(format="bgr24")
 
         if self.transform == "face":
 
             img = visualize_faces(img) 
 
-        elif self.transform == "action":
+        elif self.transform == "activity":
 
-            img = visualize_action(img)
+            img = visualize_activity(img)
 
         elif self.transform == "pose":
 
