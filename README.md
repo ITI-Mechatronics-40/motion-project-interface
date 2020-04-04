@@ -5,11 +5,11 @@ This is an real-time web interface for the project with the following features.
 * [Action Recognition](https://github.com/AbdurrahmanNadi/activity_recognition_web_service)
 * Pose Estimation
 
-Based on [server example](https://github.com/aiortc/aiortc/tree/master/examples/server) in the [aiortc repo](https://github.com/aiortc/aiortc).
+Based on [server example](https://github.com/aiortc/aiortc/tree/master/examples/server) in the [`aiortc` repo](https://github.com/aiortc/aiortc).
 
 ## Getting started
 
-* Install aiortc by following the instructions [here](https://github.com/aiortc/aiortc#requirements)
+* Install `aiortc` by following the instructions [here](https://github.com/aiortc/aiortc#requirements)
 * Run server.py script.
 
   `python server.py`
