@@ -21,6 +21,7 @@ logger = logging.getLogger("pc")
 pcs = set()
 
 
+
 class VideoTransformTrack(MediaStreamTrack):
     """
     A video stream track that transforms frames from an another track.
@@ -35,7 +36,8 @@ class VideoTransformTrack(MediaStreamTrack):
 
     async def recv(self):
         frame = await self.track.recv()
-
+        global num_of_frames
+        num_of_frames += 1
         img = frame.to_ndarray(format="bgr24")
 
         if self.transform == "face":
@@ -90,17 +92,17 @@ async def offer(request):
 
     # prepare local media
     # player = MediaPlayer(os.path.join(ROOT, "demo-instruct.wav"))
-    if args.write_audio:
-        recorder = MediaRecorder(args.write_audio)
-    else:
-        recorder = MediaBlackhole()
+    # if args.write_audio:
+    #     recorder = MediaRecorder(args.write_audio)
+    # else:
+    recorder = MediaBlackhole()
 
     @pc.on("datachannel")
     def on_datachannel(channel):
         @channel.on("message")
         def on_message(message):
-            if isinstance(message, str) and message.startswith("ping"):
-                channel.send("pong" + message[4:])
+            if isinstance(message, str) and message.startswith("Recognize Action"):
+                channel.send(str(num_of_frames))
 
     @pc.on("iceconnectionstatechange")
     async def on_iceconnectionstatechange():
@@ -162,6 +164,9 @@ if __name__ == "__main__":
     parser.add_argument("--verbose", "-v", action="count")
     parser.add_argument("--write-audio", help="Write received audio to a file")
     args = parser.parse_args()
+
+
+    num_of_frames = 0
 
     if args.verbose:
         logging.basicConfig(level=logging.DEBUG)
