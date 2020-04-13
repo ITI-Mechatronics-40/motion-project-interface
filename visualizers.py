@@ -19,10 +19,13 @@ def visualize_faces(img):
     return img
 
 
-def visualize_activity(img, api, headers):
+def visualize_activity(img, api):
     global last_prediction
     rgb_img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     image_req = json.dumps({'img': encode_img(rgb_img)})
+    headers =   {
+                'Content-Type': 'application/json'
+                }
     response = requests.request("PUT", url=api['upload_img'], headers=headers, data=image_req)
     shape = img.shape
     if response.status_code == 200:
