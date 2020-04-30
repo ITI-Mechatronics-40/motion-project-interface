@@ -28,8 +28,7 @@ def visualize_text(img, text):
 			s_x *= font_scale_y
 			s_y *= font_scale_y
 			font_scale *= font_scale_y
-		cv2.putText(img, line, (10,int((idx+1) * (line_spacing + s_y))), font, font_scale,
-														(0, 0, 255), thickness, cv2.LINE_AA)
+		cv2.putText(img, line, (10,int((idx+1) * (line_spacing + s_y))), font, font_scale, (0, 0, 255), thickness, cv2.LINE_AA)
 	return img
 
 
