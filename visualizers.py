@@ -13,9 +13,10 @@ def encode_img(image):
     enc_buff = base64.b64encode(buffer)
     return str(enc_buff, 'utf-8')
 
-
 def visualize_faces(img):
 	img [...,1:] = 0
+	print(img.shape)
+	# time.sleep(0.5)
 	return img
 
 def visualize_text(img, text):
