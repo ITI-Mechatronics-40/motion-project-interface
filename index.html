@@ -1,111 +1,181 @@
+<!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8"/> 
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <!-- <meta charset="UTF-8"/> -->
+<!--     <meta name="viewport" content="width=device-width, initial-scale=1.0" /> -->
     <title>WebRTC demo</title>
     <style>
-    button {
-        padding: 8px 16px;
-    }
+       body {
+            padding: 0 5%;
+        } 
+        .bg-1 {
+            background-color: #4e4eff; /* Green */
+            color: #ffffff;
+        }
+        button {
+            padding: 8px 16px;
+        }
 
-    pre {
-        overflow-x: hidden;
-        overflow-y: auto;
-    }
+        pre {
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
 
-    video {
-        width: 100%;
-    }
+        video {
+            width: 100%;
+        }
 
-    .option {
-        margin-bottom: 8px;
-    }
+        .option {
+            margin-bottom: 8px;
+        }
 
-    #media {
-        max-width: 1280px;
-    }
+        #media {
+            max-width: 1280px;
+        }
     </style>
 </head>
 <body>
 
-<h2>Options</h2>
-<div class="option">
-    <input id="use-datachannel" checked="checked" type="checkbox"/>
-    <label for="use-datachannel">Use datachannel</label>
-    <select id="datachannel-parameters">
-        <option value='{"ordered": true}'>Ordered, reliable</option>
-        <option value='{"ordered": false, "maxRetransmits": 0}'>Unordered, no retransmissions</option>
-        <option value='{"ordered": false, "maxPacketLifetime": 500}'>Unordered, 500ms lifetime</option>
-    </select>
-</div>
-<div class="option">
-    <input id="use-audio" type="checkbox"/>
-    <label for="use-audio">Use audio</label>
-    <select id="audio-codec">
-        <option value="default" selected>Default codecs</option>
-        <option value="opus/48000/2">Opus</option>
-        <option value="PCMU/8000">PCMU</option>
-        <option value="PCMA/8000">PCMA</option>
-    </select>
-</div>
-<div class="option">
-    <input id="use-video" checked="checked" type="checkbox"/>
-    <label for="use-video">Use video</label>
-    <select id="video-resolution">
-        <option value="" selected>Default resolution</option>
-        <option value="320x240">320x240</option>
-        <option value="640x480">640x480</option>
-        <option value="960x540">960x540</option>
-        <option value="1280x720">1280x720</option>
-    </select>
-    <select id="video-transform">
-        <option value="none" selected>No transform</option>
-        <option value="face">Face recognition</option>
-        <option value="activity">Activity recognition</option>
-        <option value="pose">Pose estimation</option>
-    </select>
-    <select id="video-codec">
-        <option value="default" selected>Default codecs</option>
-        <option value="VP8/90000">VP8</option>
-        <option value="H264/90000">H264</option>
-    </select>
-</div>
-<div class="option">
-    <input id="use-stun" type="checkbox"/>
-    <label for="use-stun">Use STUN server</label>
+<div class="page-header container-fluid">
+  <h1>Exercise Analysis Project <small>Mechatronics 40 - ITI</small></h1>
 </div>
 
-<button id="start" onclick="start()">Start</button>
-<button id="stop" style="display: none" onclick="stop()">Stop</button>
-
-<h2>State</h2>
-<p>
-    ICE gathering state: <span id="ice-gathering-state"></span>
-</p>
-<p>
-    ICE connection state: <span id="ice-connection-state"></span>
-</p>
-<p>
-    Signaling state: <span id="signaling-state"></span>
-</p>
-
-<div id="media" style="display: none">
-    <h2>Media</h2>
-
-    <audio id="audio" autoplay="true"></audio>
-    <video id="video" autoplay="true" playsinline="true"></video>
+<div class="row">
+    <p>
+        This project aims to provide motion capture capabilities for sports science.
+    </p>
+    <p>
+        The project is divided into 3 sub-projects.
+        <ul>
+            <li><b>Posture Estimation</b>: Estimates the posture of the player, or multiple players. The output of this task is the position of each joint of the body in the captured image.</li>
+            <li><b>Activity Recognition</b>: Recognizes the activity of the player. This gives a high-level details regarding the activity and is expexted to enhance the analysis of the activity.</li>
+            <li><b>Face Recognition</b>: Recognizes the faces in the captured images. This can be used to assign each analysis with a player and track the player activites across different sessions.</li>
+        </ul>
+        For more details please refer to the links below.
+    </p>
 </div>
 
-<h2>Data channel</h2>
-<pre id="data-channel" style="height: 200px;"></pre>
+<div class="row">
 
-<h2>SDP</h2>
+    <div  class="col-sm-10">
+        <div class="row container-fluid">
+            <div id="media" class="img-rounded" style="display: block">
+                <h2>Media</h2>
 
-<h3>Offer</h3>
-<pre id="offer-sdp"></pre>
+                <audio id="audio" autoplay="true"></audio>
+                <video id="video" autoplay="true" playsinline="true"></video>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-2">
+        <h2>Options</h2>
+        <!-- <div class="option">
+            <input id="use-datachannel" type="checkbox"/>
+            <label for="use-datachannel">Use datachannel</label>
+            <select class="opts" id="datachannel-parameters">
+                <option value='{"ordered": true}'>Ordered, reliable</option>
+                <option value='{"ordered": false, "maxRetransmits": 0}'>Unordered, no retransmissions</option>
+                <option value='{"ordered": false, "maxPacketLifetime": 500}'>Unordered, 500ms lifetime</option>
+            </select>
+        </div> -->
 
-<h3>Answer</h3>
-<pre id="answer-sdp"></pre>
+        <div class="option">
+            <input id="use-video" checked="checked" type="checkbox"/>
+            <label for="use-video">Use video</label>
+            <select id="video-resolution">
+                <!-- <option value="" >Default resolution</option> -->
+                <option value="320x240" selected>320x240</option>
+                <option value="640x480">640x480</option>
+                <!-- <option value="960x540">960x540</option> -->
+                <!-- <option value="1280x720">1280x720</option> -->
+            </select>
+            <select id="video-transform">
+                <!-- <option value="none" selected></option> -->
+                <option value="pose" selected>Pose estimation</option>
+                <option value="face">Face recognition</option>
+                <option value="activity">Activity recognition</option>
+            </select>
+            <select id="video-codec">
+                <option value="default" selected>Default codecs</option>
+                <option value="VP8/90000">VP8</option>
+                <option value="H264/90000">H264</option>
+            </select>
+        </div>
+        <div class="option">
+            <input id="use-stun" type="checkbox" checked="checked"/>
+            <label for="use-stun">Use STUN server</label>
+        </div>
+        <div class="row align-self-end">
+            <a href="#" class="btn btn-default btn-lg btn-block" id="start" onclick="start()">Start</a>
+            <a href="#" class="btn btn-default btn-lg btn-block" id="stop" style="display: none" onclick="stop()">Stop</a>
+            <!-- <button id="start" class="btn btn-large btn-block" onclick="start()">Start</button> -->
+            <!-- <button id="stop" class="btn btn-large btn-block" style="display: none" onclick="stop()">Stop</button> -->
+        </div>
+    </div>
+    
+</div>
+
+<div class="row text-center">
+    <!-- <div class="col-sm-1"></div> -->
+    <div class="col-sm-4">
+        <!-- <div class="container"> -->
+          <!-- <div class="jumbotron"> -->
+            <h1><a href="https://gitlab.com/mo3tz/itiintake40-facerecognition">Face Recognition</a></h1>
+            <p><i>Recognizes Faces</i><br>
+                <b>Moetaz Mohamed</b>
+            </p>
+          <!-- </div> -->
+          <!-- <p>This is some text.</p> -->
+          <!-- <p>This is another text.</p> -->
+        <!-- </div> -->
+        
+    </div>
+    <!-- <div class="col-sm-1"></div> -->
+    <div class="col-sm-4">
+          <!-- <div class="jumbotron"> -->
+            <h1><a href="https://github.com/AbdurrahmanNadi/activity_recognition_web_service">Activity Recognition</a></h1>
+            <p><i>Recognizes Activity</i><br>
+                <b>Abdelrahman Nadi</b>
+            </p>
+          <!-- </div> -->
+        
+    </div>
+    <!-- <div class="col-sm-1"></div> -->
+    <div class="col-sm-4">
+          <!-- <div class="jumbotron"> -->
+            <h1><a href="https://github.com/samuelmyoussef/pose_estimation_cpu">Pose Estimation</a></h1>
+            <p><i>Estimates Postures</i><br>
+                <b>Samuel Youssef</b>
+            </p>
+          <!-- </div> -->
+        
+    </div>
+
+</div>
+
+ <a data-toggle="collapse" href="#log">Info</a>
+
+<div id="log" class="collapse">
+    <h2>State</h2>
+    <p>
+        ICE gathering state: <span id="ice-gathering-state"></span>
+    </p>
+    <p>
+        ICE connection state: <span id="ice-connection-state"></span>
+    </p>
+    <p>
+        Signaling state: <span id="signaling-state"></span>
+    </p>
+
+
+    <h2>Data channel</h2>
+    <pre id="data-channel" style="height: 200px;"></pre>
+</div> 
 
 <script src="client.js"></script>
 </body>
