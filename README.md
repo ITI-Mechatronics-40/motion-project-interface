@@ -3,7 +3,7 @@
 This is an real-time web interface for the project with the following features.
 * [Face Recognition](https://gitlab.com/mo3tz/itiintake40-facerecognition)
 * [Action Recognition](https://github.com/AbdurrahmanNadi/activity_recognition_web_service)
-* [Pose Estimation](https://github.com/samuelmyoussef/pose_estimation_cpu)
+* [Pose Estimation](https://github.com/samuelmyoussef/pose_estimation_gpu)
 
 Based on [server example](https://github.com/aiortc/aiortc/tree/master/examples/server) in the [`aiortc` repo](https://github.com/aiortc/aiortc).
 

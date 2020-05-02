@@ -3,11 +3,20 @@ import numpy as np
 
 from activity_service import add_to_sample, run_activity_inference
 
+import requests
+import json
+import base64
+
+
+def encode_img(image):
+    _, buffer = cv2.imencode('.jpg', image)
+    enc_buff = base64.b64encode(buffer)
+    return str(enc_buff, 'utf-8')
+
 
 def visualize_faces(img):
 	img [...,1:] = 0
 	return img
-
 
 def visualize_text(img, text):
 	font = cv2.FONT_HERSHEY_SIMPLEX
@@ -31,7 +40,6 @@ def visualize_text(img, text):
 		cv2.putText(img, line, (10,int((idx+1) * (line_spacing + s_y))), font, font_scale, (0, 0, 255), thickness, cv2.LINE_AA)
 	return img
 
-
 def visualize_activity(img):
 	status_code, last_prediction = add_to_sample(img)
 	text = ['', '']
@@ -46,5 +54,11 @@ def visualize_activity(img):
 
 
 def visualize_pose(img):
-	img[...,:-1] = 0
-	return img
+    url = "http://0.0.0.0:5001/"
+    headers = {'Content-Type': 'application/json'}
+    image_req = json.dumps({'img': str(encode_img(img))})
+    response = requests.request("GET", url=url+'analyse_image', headers=headers, data=image_req)
+    img = json.loads(response.content)['data']
+    img = np.array(img, dtype=np.uint8)
+
+    return img
