@@ -134,10 +134,13 @@ async def offer(request):
         @track.on("ended")
         async def on_ended():
             if params["video_transform"] == "activity":
-                if cleanup(local_video.activity_api_url) == 200:
-                    log_info("Backend Cleanup Successful")
-                else:
-                    log_info("Backend Cleanup unsuccessful")
+                try:
+                    if cleanup(local_video.activity_api_url) == 200:
+                        log_info("Backend Cleanup Successful")
+                    else:
+                        log_info("Backend Cleanup unsuccessful")
+                except KeyError:
+                    log_info("Clean Up is not supported by the activity server Please Update to the latest version")
             log_info("Track %s ended", track.kind)
             await recorder.stop()
 
