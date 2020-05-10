@@ -28,11 +28,7 @@ def init_i3d_model(num_samples=16):
     return json.loads(response.text.encode('utf8'))['API']
 
 
-api_url = init_i3d_model(num_samples=16)
-
-
-def add_to_sample(img):
-    global api_url
+def add_to_sample(api_url, img):
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     print(f'Sent Image Shape: {img.shape}')
     image_req = json.dumps({'img': encode_img(img)})
@@ -45,8 +41,12 @@ def add_to_sample(img):
     return response.status_code, last_prediction
 
 
-def run_activity_inference():
-    global api_url
+def run_activity_inference(api_url):
     response = requests.request("GET", api_url['run'])
     return json.loads(response.content)['prediction'][0].split(',')
+
+
+def cleanup(api_url):
+    response = requests.request("DELETE", api_url['cleanup'])
+    return response.status_code
 

@@ -13,11 +13,13 @@ def encode_img(image):
     enc_buff = base64.b64encode(buffer)
     return str(enc_buff, 'utf-8')
 
+
 def visualize_faces(img):
 	img [...,1:] = 0
 	print(img.shape)
 	# time.sleep(0.5)
 	return img
+
 
 def visualize_text(img, text):
 	font = cv2.FONT_HERSHEY_SIMPLEX
@@ -41,11 +43,12 @@ def visualize_text(img, text):
 		cv2.putText(img, line, (10,int((idx+1) * (line_spacing + s_y))), font, font_scale, (0, 0, 255), thickness, cv2.LINE_AA)
 	return img
 
-def visualize_activity(img):
-	status_code, last_prediction = add_to_sample(img)
+
+def visualize_activity(api_url, img):
+	status_code, last_prediction = add_to_sample(api_url, img)
 	text = ['', '']
 	if status_code == 200:
-		prediction = run_activity_inference()
+		prediction = run_activity_inference(api_url)
 		text = [f'Label: {prediction[2]}', f'Confidence: {float(prediction[1]) * 100 :0.3f}%']
 	elif status_code == 202:
 		if last_prediction != '':
