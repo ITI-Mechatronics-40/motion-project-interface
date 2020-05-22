@@ -4,7 +4,7 @@ import base64
 import cv2
 
 
-base_url = "http://localhost:5000/activity_recognition/i3d/v1.0/init_model"
+base_url = "http://0.0.0.0:5000/activity_recognition/i3d/v1.0/init_model"
 
 headers = {
   'Content-Type': 'application/json'
