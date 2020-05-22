@@ -14,7 +14,9 @@ from aiortc import MediaStreamTrack, RTCPeerConnection, RTCSessionDescription
 from aiortc.contrib.media import MediaBlackhole, MediaPlayer, MediaRecorder
 
 from visualizers import *
+from activity_service import init_i3d_model, cleanup
 
+NUM_SAMPLES = 16            #Activity Frames per Sample
 ROOT = os.path.dirname(__file__)
 
 logger = logging.getLogger("pc")
@@ -29,10 +31,11 @@ class VideoTransformTrack(MediaStreamTrack):
 
     kind = "video"
 
-    def __init__(self, track, transform):
+    def __init__(self, track, transform, api_url):
         super().__init__()  # don't forget this!
         self.track = track
         self.transform = transform
+        self.activity_api_url = api_url
 
     async def recv(self):
         frame = await self.track.recv()
@@ -46,7 +49,7 @@ class VideoTransformTrack(MediaStreamTrack):
 
         elif self.transform == "activity":
 
-            img = visualize_activity(img)
+            img = visualize_activity(self.activity_api_url, img)
 
         elif self.transform == "pose":
 
@@ -119,13 +122,25 @@ async def offer(request):
             # pc.addTrack(player.audio)
             # recorder.addTrack(track)
         if track.kind == "video":
+            if params["video_transform"] == "activity":
+                api_url = init_i3d_model(num_samples=NUM_SAMPLES)
+            else:
+                api_url = None
             local_video = VideoTransformTrack(
-                track, transform=params["video_transform"]
+                track, transform=params["video_transform"], api_url=api_url
             )
             pc.addTrack(local_video)
 
         @track.on("ended")
         async def on_ended():
+            if params["video_transform"] == "activity":
+                try:
+                    if cleanup(local_video.activity_api_url) == 200:
+                        log_info("Backend Cleanup Successful")
+                    else:
+                        log_info("Backend Cleanup unsuccessful")
+                except KeyError:
+                    log_info("Clean Up is not supported by the activity server Please Update to the latest version")
             log_info("Track %s ended", track.kind)
             await recorder.stop()
 
