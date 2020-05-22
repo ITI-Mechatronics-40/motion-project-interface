@@ -54,6 +54,12 @@ RUN pip3 install \
     aiohttp \
     requests
 
-WORKDIR /home
+#WORKDIR /home
 
-RUN git clone https://github.com/ITI-Mechatronics-40/motion-project-interface.git
+RUN git clone https://github.com/ITI-Mechatronics-40/motion-project-interface.git /home/interface
+
+WORKDIR /home/interface
+
+RUN openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365 -nodes -subj /CN=motionAnalysis
+
+ENTRYPOINT git pull && python3 server.py --cert-file cert.pem --key-file key.pem
