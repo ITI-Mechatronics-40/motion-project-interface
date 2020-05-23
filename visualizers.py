@@ -7,6 +7,10 @@ import requests
 import json
 import base64
 
+import configparser
+
+config = configparser.ConfigParser()
+config.read("config.ini")
 
 def encode_img(image):
     _, buffer = cv2.imencode('.jpg', image)
@@ -58,7 +62,7 @@ def visualize_activity(api_url, img):
 
 
 def visualize_pose(img):
-    url = "http://0.0.0.0:5001/"
+    url = "http://{}/".format(config['HOSTNAMES']['pose_service'])
     headers = {'Content-Type': 'application/json'}
     image_req = json.dumps({'img': str(encode_img(img))})
     response = requests.request("GET", url=url+'analyse_image', headers=headers, data=image_req)

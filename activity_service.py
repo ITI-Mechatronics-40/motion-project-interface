@@ -3,8 +3,12 @@ import json
 import base64
 import cv2
 
+import configparser
 
-base_url = "http://0.0.0.0:5000/activity_recognition/i3d/v1.0/init_model"
+config = configparser.ConfigParser()
+config.read("config.ini")
+
+base_url = "http://{}/activity_recognition/i3d/v1.0/init_model".format(config['HOSTNAMES']['activity_service'])
 
 headers = {
   'Content-Type': 'application/json'
