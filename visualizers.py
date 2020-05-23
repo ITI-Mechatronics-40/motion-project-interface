@@ -55,7 +55,7 @@ def visualize_activity(api_url, img):
 	
 	
 def visualize_faces(img):
-    base_url = "http://0.0.0.0:5000/model/api/v1.0/"
+    base_url = "http://{}/model/api/v1.0/".format(config['HOSTNAMES']['face_service'])
     headers = {'Content-Type': 'application/json'}
     image_req = json.dumps({'img': str(encode_img(img))})
     response = requests.request(
