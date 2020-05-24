@@ -56,7 +56,7 @@ RUN pip3 install \
 
 #WORKDIR /home
 
-RUN git clone https://github.com/ITI-Mechatronics-40/motion-project-interface.git /home/interface
+RUN git clone -b docker-compose https://github.com/ITI-Mechatronics-40/motion-project-interface.git /home/interface
 
 WORKDIR /home/interface
 
