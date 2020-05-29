@@ -94,18 +94,18 @@ def visualize_faces(img):
                 if l == 0 or l == 3:
                     color = (0, 255, 0)
                 cv2.circle(img, (landmark5[l][0], landmark5[l][1]), 1, color, 2)
-                font = cv2.FONT_HERSHEY_SIMPLEX
-                bottomLeftCornerOfText = (box[2]-80, box[3]+15)
-                fontScale = 0.4
-                fontColor = (0, 255, 255)
-                lineType = 2
+            font = cv2.FONT_HERSHEY_SIMPLEX
+            bottomLeftCornerOfText = (box[2]-80, box[3]+15)
+            fontScale = 0.4
+            fontColor = (0, 255, 255)
+            lineType = 2
 
-                cv2.putText(img, names[i],
-                            bottomLeftCornerOfText,
-                            font,
-                            fontScale,
-                            fontColor,
-                            lineType)
+            cv2.putText(img, names[i],
+                        bottomLeftCornerOfText,
+                        font,
+                        fontScale,
+                        fontColor,
+                        lineType)
             # cv2.imshow('output', img)
     except:
         pass
