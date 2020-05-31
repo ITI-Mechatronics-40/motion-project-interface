@@ -1,7 +1,7 @@
 # Motion Capture Porject - ITI Intake 40
 
 This is an real-time web interface for the project with the following features.
-* [Face Recognition](https://gitlab.com/mo3tz/itiintake40-facerecognition)
+* [Face Recognition](https://github.com/Moetaz-M-Mokhtar/ITIintake40_FaceRecognition)
 * [Action Recognition](https://github.com/AbdurrahmanNadi/activity_recognition_web_service)
 * [Pose Estimation](https://github.com/samuelmyoussef/pose_estimation_gpu)
 
