@@ -126,11 +126,11 @@ function start() {
                 width: parseInt(resolution[0], 0),
                 height: parseInt(resolution[1], 0),
                 
-                frameRate: 5
+                frameRate: 4
             };
         } else {
             constraints.video = {
-                frameRate: 5
+                frameRate: 4
             };
         }
     }
@@ -151,12 +151,21 @@ function start() {
         negotiate();
     }
 
+	document.getElementById('use-stun').disabled = true;
+	document.getElementById('video-resolution').disabled = true;
+	document.getElementById('use-video').disabled = true;
+	document.getElementById('video-codec').disabled = true;
+	document.getElementById('video-transform').disabled = true;
     document.getElementById('stop').style.display = 'inline-block';
 }
 
 function stop() {
     document.getElementById('stop').style.display = 'none';
-
+	document.getElementById('use-stun').disabled = false;
+	document.getElementById('video-resolution').disabled = false;
+	document.getElementById('use-video').disabled = false;
+	document.getElementById('video-codec').disabled = false;
+	document.getElementById('video-transform').disabled = false;
     // close data channel
     if (dc) {
         dc.close();
@@ -180,6 +189,7 @@ function stop() {
     setTimeout(function() {
         pc.close();
     }, 500);
+    document.getElementById('start').style.display = 'inline-block';
 }
 
 function sdpFilterCodec(kind, codec, realSdp) {
