@@ -10,6 +10,19 @@ var pc = null;
 // data channel
 var dc = null, dcInterval = null;
 
+// var isChrome = !!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime);
+
+if (!(navigator.userAgent.indexOf("Chrome") != -1)){
+
+	document.getElementById("chrome-check").style.display = "block";
+	document.getElementById('use-stun').disabled = true;
+	document.getElementById('video-resolution').disabled = true;
+	document.getElementById('use-video').disabled = true;
+	document.getElementById('video-codec').disabled = true;
+	document.getElementById('video-transform').disabled = true;
+}
+
+
 function createPeerConnection() {
     var config = {
         sdpSemantics: 'unified-plan'
@@ -99,6 +112,9 @@ function negotiate() {
 
 function start() {
     document.getElementById('start').style.display = 'none';
+	if (!(navigator.userAgent.indexOf("Chrome") != -1)){
+		return;
+	}
 
     pc = createPeerConnection();
 
