@@ -20,6 +20,7 @@ if (!(navigator.userAgent.indexOf("Chrome") != -1)){
 	document.getElementById('use-video').disabled = true;
 	document.getElementById('video-codec').disabled = true;
 	document.getElementById('video-transform').disabled = true;
+	document.getElementById('start').disabled = true;
 }
 
 
@@ -134,6 +135,12 @@ function start() {
         video: false
     };
 
+    var fr = 2;
+
+    if (document.getElementById('video-transform').value == 'activity'){
+    	fr = 4
+    } 
+
     if (document.getElementById('use-video').checked) {
         var resolution = document.getElementById('video-resolution').value;
         if (resolution) {
@@ -142,11 +149,11 @@ function start() {
                 width: parseInt(resolution[0], 0),
                 height: parseInt(resolution[1], 0),
                 
-                frameRate: 4
+                frameRate: fr
             };
         } else {
             constraints.video = {
-                frameRate: 4
+                frameRate: fr
             };
         }
     }
